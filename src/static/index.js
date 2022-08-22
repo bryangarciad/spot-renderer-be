@@ -5,36 +5,14 @@ function jq(htmlid) {
     return htmlid.replace(/(:|\.|\[|\]|,|=|@)/g, "\\$1").replace(/\//g, "-");
 }
 function readJsonData() { 
-    // WE CAN REMOVE STATIC JSON AND QUERY SPOTS USING A QUERY PARAM spotUrl
-    // UNCOMMENT FOLLOWING CODE
-    //
-    
-    // const urlParams = new URLSearchParams(window.location.search);
-    // const spotUrl urlParams.get('spotUrl')
-    // const data = fetch(spotUrl).then(data => {
-        // if (data && Array.isArray(data)) {
-        //     data.forEach(item => {
-        //         if (item) {
-        //             let views = item.Views;
-        //             createRegions(views)
-        //             renderViews(views);
-        //         }
-        //     });
-        // } else if (data && data.Views && !Array.isArray(data)) {
-        //     processResponses(data);
-        //     renderViews(data.Views);
-        // }
-    // })
-
-
-    $.getJSON( "abc1.json", function(data) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const spotUrl = urlParams.get('spotUrl')
+    fetch(spotUrl).then(async (response) => {
+        const data = await response.json()
         if (data && Array.isArray(data)) {
-            
-            //processResponses(data);
             data.forEach(item => {
                 if (item) {
                     let views = item.Views;
-                    //console.log(views)
                     createRegions(views)
                     renderViews(views);
                 }
@@ -43,7 +21,7 @@ function readJsonData() {
             processResponses(data);
             renderViews(data.Views);
         }
-    });
+    })
 }
 
 function createRegions (views) {
